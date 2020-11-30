@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     Button btnRegister;
 
-    List<MOJO> productDetails;
+    List<stringName> facultyDetails;
     SQLiteDatabase sqLiteDatabase;
 
     @Override
@@ -29,25 +29,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new OpenHelper(this);
-        sqLiteDatabase = dbHelper.getReadableDatabase();
+        sqLiteDatabase= dbHelper.getReadableDatabase();
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
 
 
-        productDetails = new ArrayList<MOJO>();
-        productDetails.clear();
-        Cursor c1 = sqLiteDatabase.query(DataBaseInfo.TABLE_NAME, null, null, null, null, null, null);
+
+        facultyDetails = new ArrayList<stringName>();
+        facultyDetails.clear();
+        Cursor c1 = sqLiteDatabase.query(DatabaseInfo.TABLE_NAME, null, null, null, null, null, null);
 
         if (c1 != null && c1.getCount() != 0) {
-            productDetails.clear();
+            facultyDetails.clear();
             while (c1.moveToNext()) {
-                MOJO prodDetails = new MOJO();
+                stringName fucDetails = new stringName();
 
-                prodDetails.setP_id(c1.getInt(c1.getColumnIndex(DataBaseInfo._ID)));
-                prodDetails.setP_code(c1.getString(c1.getColumnIndex(DataBaseInfo.productCode)));
-                prodDetails.setP_name(c1.getString(c1.getColumnIndex(DataBaseInfo.productName)));
-                prodDetails.setP_des(c1.getString(c1.getColumnIndex(DataBaseInfo.productDes)));
-                prodDetails.setP_quantity(c1.getString(c1.getColumnIndex(DataBaseInfo.productQuantity)));
-                productDetails.add(prodDetails);
+                fucDetails.setP_id(c1.getInt(c1.getColumnIndex(DatabaseInfo._ID)));
+                fucDetails.setP_idnum(c1.getString(c1.getColumnIndex(DatabaseInfo.facultyid)));
+                fucDetails.setP_name(c1.getString(c1.getColumnIndex(DatabaseInfo.facultyname)));
+                fucDetails.setP_address(c1.getString(c1.getColumnIndex(DatabaseInfo.facultyadd)));
+                fucDetails.setP_degree(c1.getString(c1.getColumnIndex(DatabaseInfo.facultydegree)));
+                facultyDetails.add(fucDetails);
 
 
             }
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         c1.close();
         layoutManager = new LinearLayoutManager(this);
-        userAdapter = new RecyclerAdapter(productDetails);
+        userAdapter = new RecycleAdapter(facultyDetails);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(userAdapter);
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void clickAddProduct(View view) {
-        startActivity(new Intent(this, AddingProduct.class));
+    public void clickAddProduct(View view){
+        startActivity(new Intent(this,AddingFaculty.class));
     }
 }
